@@ -10,33 +10,121 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as AuthenticatedFamilyRouteImport } from './routes/_authenticated/family'
+import { Route as AuthenticatedPlayRouteImport } from './routes/_authenticated/play'
+import { Route as AuthenticatedRacesIndexRouteImport } from './routes/_authenticated/races.index'
+import { Route as AuthenticatedRacesRaceIdRouteImport } from './routes/_authenticated/races.$raceId'
+import { Route as ApiPublicHooksSyncResultsRouteImport } from './routes/api/public/hooks/sync-results'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedFamilyRoute = AuthenticatedFamilyRouteImport.update({
+  id: '/family',
+  path: '/family',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedPlayRoute = AuthenticatedPlayRouteImport.update({
+  id: '/play',
+  path: '/play',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedRacesIndexRoute = AuthenticatedRacesIndexRouteImport.update({
+  id: '/races/',
+  path: '/races/',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedRacesRaceIdRoute =
+  AuthenticatedRacesRaceIdRouteImport.update({
+    id: '/races/$raceId',
+    path: '/races/$raceId',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const ApiPublicHooksSyncResultsRoute =
+  ApiPublicHooksSyncResultsRouteImport.update({
+    id: '/api/public/hooks/sync-results',
+    path: '/api/public/hooks/sync-results',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/family': typeof AuthenticatedFamilyRoute
+  '/play': typeof AuthenticatedPlayRoute
+  '/races/$raceId': typeof AuthenticatedRacesRaceIdRoute
+  '/races/': typeof AuthenticatedRacesIndexRoute
+  '/api/public/hooks/sync-results': typeof ApiPublicHooksSyncResultsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/family': typeof AuthenticatedFamilyRoute
+  '/play': typeof AuthenticatedPlayRoute
+  '/races/$raceId': typeof AuthenticatedRacesRaceIdRoute
+  '/races': typeof AuthenticatedRacesIndexRoute
+  '/api/public/hooks/sync-results': typeof ApiPublicHooksSyncResultsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/auth': typeof AuthRoute
+  '/_authenticated/family': typeof AuthenticatedFamilyRoute
+  '/_authenticated/play': typeof AuthenticatedPlayRoute
+  '/_authenticated/races/$raceId': typeof AuthenticatedRacesRaceIdRoute
+  '/_authenticated/races/': typeof AuthenticatedRacesIndexRoute
+  '/api/public/hooks/sync-results': typeof ApiPublicHooksSyncResultsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/auth'
+    | '/family'
+    | '/play'
+    | '/races/$raceId'
+    | '/races/'
+    | '/api/public/hooks/sync-results'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/auth'
+    | '/family'
+    | '/play'
+    | '/races/$raceId'
+    | '/races'
+    | '/api/public/hooks/sync-results'
+  id:
+    | '__root__'
+    | '/'
+    | '/_authenticated'
+    | '/auth'
+    | '/_authenticated/family'
+    | '/_authenticated/play'
+    | '/_authenticated/races/$raceId'
+    | '/_authenticated/races/'
+    | '/api/public/hooks/sync-results'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  AuthRoute: typeof AuthRoute
+  ApiPublicHooksSyncResultsRoute: typeof ApiPublicHooksSyncResultsRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,22 +136,81 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/family': {
+      id: '/_authenticated/family'
+      path: '/family'
+      fullPath: '/family'
+      preLoaderRoute: typeof AuthenticatedFamilyRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/play': {
+      id: '/_authenticated/play'
+      path: '/play'
+      fullPath: '/play'
+      preLoaderRoute: typeof AuthenticatedPlayRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/races/': {
+      id: '/_authenticated/races/'
+      path: '/races'
+      fullPath: '/races/'
+      preLoaderRoute: typeof AuthenticatedRacesIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/races/$raceId': {
+      id: '/_authenticated/races/$raceId'
+      path: '/races/$raceId'
+      fullPath: '/races/$raceId'
+      preLoaderRoute: typeof AuthenticatedRacesRaceIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/api/public/hooks/sync-results': {
+      id: '/api/public/hooks/sync-results'
+      path: '/api/public/hooks/sync-results'
+      fullPath: '/api/public/hooks/sync-results'
+      preLoaderRoute: typeof ApiPublicHooksSyncResultsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedFamilyRoute: typeof AuthenticatedFamilyRoute
+  AuthenticatedPlayRoute: typeof AuthenticatedPlayRoute
+  AuthenticatedRacesRaceIdRoute: typeof AuthenticatedRacesRaceIdRoute
+  AuthenticatedRacesIndexRoute: typeof AuthenticatedRacesIndexRoute
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedFamilyRoute: AuthenticatedFamilyRoute,
+  AuthenticatedPlayRoute: AuthenticatedPlayRoute,
+  AuthenticatedRacesRaceIdRoute: AuthenticatedRacesRaceIdRoute,
+  AuthenticatedRacesIndexRoute: AuthenticatedRacesIndexRoute,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  AuthRoute: AuthRoute,
+  ApiPublicHooksSyncResultsRoute: ApiPublicHooksSyncResultsRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
