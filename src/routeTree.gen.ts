@@ -16,6 +16,7 @@ import { Route as AuthenticatedFamilyRouteImport } from './routes/_authenticated
 import { Route as AuthenticatedPlayRouteImport } from './routes/_authenticated/play'
 import { Route as AuthenticatedRacesIndexRouteImport } from './routes/_authenticated/races.index'
 import { Route as AuthenticatedRacesRaceIdRouteImport } from './routes/_authenticated/races.$raceId'
+import { Route as ApiPublicHooksSyncResultsRouteImport } from './routes/api/public/hooks/sync-results'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -52,6 +53,12 @@ const AuthenticatedRacesRaceIdRoute =
     path: '/races/$raceId',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const ApiPublicHooksSyncResultsRoute =
+  ApiPublicHooksSyncResultsRouteImport.update({
+    id: '/api/public/hooks/sync-results',
+    path: '/api/public/hooks/sync-results',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -60,6 +67,7 @@ export interface FileRoutesByFullPath {
   '/play': typeof AuthenticatedPlayRoute
   '/races/$raceId': typeof AuthenticatedRacesRaceIdRoute
   '/races/': typeof AuthenticatedRacesIndexRoute
+  '/api/public/hooks/sync-results': typeof ApiPublicHooksSyncResultsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -68,6 +76,7 @@ export interface FileRoutesByTo {
   '/play': typeof AuthenticatedPlayRoute
   '/races/$raceId': typeof AuthenticatedRacesRaceIdRoute
   '/races': typeof AuthenticatedRacesIndexRoute
+  '/api/public/hooks/sync-results': typeof ApiPublicHooksSyncResultsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -78,12 +87,27 @@ export interface FileRoutesById {
   '/_authenticated/play': typeof AuthenticatedPlayRoute
   '/_authenticated/races/$raceId': typeof AuthenticatedRacesRaceIdRoute
   '/_authenticated/races/': typeof AuthenticatedRacesIndexRoute
+  '/api/public/hooks/sync-results': typeof ApiPublicHooksSyncResultsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/auth' | '/family' | '/play' | '/races/$raceId' | '/races/'
+  fullPaths:
+    | '/'
+    | '/auth'
+    | '/family'
+    | '/play'
+    | '/races/$raceId'
+    | '/races/'
+    | '/api/public/hooks/sync-results'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth' | '/family' | '/play' | '/races/$raceId' | '/races'
+  to:
+    | '/'
+    | '/auth'
+    | '/family'
+    | '/play'
+    | '/races/$raceId'
+    | '/races'
+    | '/api/public/hooks/sync-results'
   id:
     | '__root__'
     | '/'
@@ -93,12 +117,14 @@ export interface FileRouteTypes {
     | '/_authenticated/play'
     | '/_authenticated/races/$raceId'
     | '/_authenticated/races/'
+    | '/api/public/hooks/sync-results'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
+  ApiPublicHooksSyncResultsRoute: typeof ApiPublicHooksSyncResultsRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -152,6 +178,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedRacesRaceIdRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/api/public/hooks/sync-results': {
+      id: '/api/public/hooks/sync-results'
+      path: '/api/public/hooks/sync-results'
+      fullPath: '/api/public/hooks/sync-results'
+      preLoaderRoute: typeof ApiPublicHooksSyncResultsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -176,6 +209,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
+  ApiPublicHooksSyncResultsRoute: ApiPublicHooksSyncResultsRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
