@@ -29,7 +29,7 @@ export const Route = createFileRoute("/_authenticated/history")({
   component: HistoryPage,
 });
 
-const EMOJIS = ["🏎️", "⚡", "🔧", "🌟", "🕰️"];
+
 const ROW = 72;
 
 function HistoryPage() {
