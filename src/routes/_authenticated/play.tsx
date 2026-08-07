@@ -266,13 +266,15 @@ function PlayPage() {
 
 function Onboarding({
   userId,
+  initialName,
   groups,
 }: {
   userId: string;
+  initialName: string;
   groups: Array<{ id: string; name: string }>;
 }) {
   const queryClient = useQueryClient();
-  const [name, setName] = useState("");
+  const [name, setName] = useState(initialName);
   const [newGroup, setNewGroup] = useState("");
 
   const join = useMutation({
@@ -303,9 +305,10 @@ function Onboarding({
 
   return (
     <div className="mx-auto max-w-lg rounded-3xl border border-border bg-card/85 p-6 shadow-card">
-      <h1 className="text-4xl">Welcome to the family game</h1>
+      <h1 className="text-4xl">Pick your family</h1>
       <p className="mt-2 text-sm text-muted-foreground">
-        Two quick things and you're racing.
+        Join a group so you can see everyone's picks and the shared leaderboard. Anyone is welcome in
+        any group.
       </p>
       <div className="mt-6 space-y-4">
         <div className="space-y-2">
