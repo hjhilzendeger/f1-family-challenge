@@ -6,7 +6,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Countdown } from "@/components/Countdown";
 import { isLocked, predictionsQuery, racesQuery, resultsQuery, scoresQuery } from "@/lib/f1";
 
-export const Route = createFileRoute("/_authenticated/races")({
+export const Route = createFileRoute("/_authenticated/races/")({
   head: () => ({
     meta: [
       { title: "Races to Austin — F1 Family Predictor" },
