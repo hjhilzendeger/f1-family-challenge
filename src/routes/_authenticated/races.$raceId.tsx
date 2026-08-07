@@ -74,7 +74,7 @@ function DriverField({
   return (
     <div className="space-y-2">
       <Label htmlFor={id}>{label}</Label>
-      <Select value={value ?? undefined} onValueChange={onChange}>
+      <Select value={value ?? ""} onValueChange={onChange}>
         <SelectTrigger id={id}>
           <SelectValue placeholder="Pick a driver" />
         </SelectTrigger>
@@ -237,7 +237,7 @@ function RaceDetail() {
               <div className="space-y-2">
                 <Label htmlFor="team">🏎️ Winning team</Label>
                 <Select
-                  value={current.team_id ?? undefined}
+                  value={current.team_id ?? ""}
                   onValueChange={(value) => set("team_id", value)}
                 >
                   <SelectTrigger id="team">
@@ -405,7 +405,7 @@ function ResultsSection({
         <div className="space-y-2">
           <Label htmlFor="result-team">🏎️ Winning team</Label>
           <Select
-            value={entry["team_id"] ?? undefined}
+            value={entry["team_id"] ?? ""}
             onValueChange={(value) => setEntry((prev) => ({ ...prev, team_id: value }))}
           >
             <SelectTrigger id="result-team">
