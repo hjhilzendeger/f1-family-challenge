@@ -13,7 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedPlayRouteImport } from './routes/_authenticated/play'
-import { Route as AuthenticatedRacesRouteImport } from './routes/_authenticated/races'
+import { Route as AuthenticatedRacesIndexRouteImport } from './routes/_authenticated/races.index'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -34,9 +34,9 @@ const AuthenticatedPlayRoute = AuthenticatedPlayRouteImport.update({
   path: '/play',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
-const AuthenticatedRacesRoute = AuthenticatedRacesRouteImport.update({
-  id: '/races',
-  path: '/races',
+const AuthenticatedRacesIndexRoute = AuthenticatedRacesIndexRouteImport.update({
+  id: '/races/',
+  path: '/races/',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 
@@ -44,13 +44,13 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/play': typeof AuthenticatedPlayRoute
-  '/races': typeof AuthenticatedRacesRoute
+  '/races/': typeof AuthenticatedRacesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/play': typeof AuthenticatedPlayRoute
-  '/races': typeof AuthenticatedRacesRoute
+  '/races': typeof AuthenticatedRacesIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -58,11 +58,11 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
   '/_authenticated/play': typeof AuthenticatedPlayRoute
-  '/_authenticated/races': typeof AuthenticatedRacesRoute
+  '/_authenticated/races/': typeof AuthenticatedRacesIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/auth' | '/play' | '/races'
+  fullPaths: '/' | '/auth' | '/play' | '/races/'
   fileRoutesByTo: FileRoutesByTo
   to: '/' | '/auth' | '/play' | '/races'
   id:
@@ -71,7 +71,7 @@ export interface FileRouteTypes {
     | '/_authenticated'
     | '/auth'
     | '/_authenticated/play'
-    | '/_authenticated/races'
+    | '/_authenticated/races/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -110,11 +110,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedPlayRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/_authenticated/races': {
-      id: '/_authenticated/races'
+    '/_authenticated/races/': {
+      id: '/_authenticated/races/'
       path: '/races'
-      fullPath: '/races'
-      preLoaderRoute: typeof AuthenticatedRacesRouteImport
+      fullPath: '/races/'
+      preLoaderRoute: typeof AuthenticatedRacesIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
   }
@@ -122,12 +122,12 @@ declare module '@tanstack/react-router' {
 
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedPlayRoute: typeof AuthenticatedPlayRoute
-  AuthenticatedRacesRoute: typeof AuthenticatedRacesRoute
+  AuthenticatedRacesIndexRoute: typeof AuthenticatedRacesIndexRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedPlayRoute: AuthenticatedPlayRoute,
-  AuthenticatedRacesRoute: AuthenticatedRacesRoute,
+  AuthenticatedRacesIndexRoute: AuthenticatedRacesIndexRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =
@@ -141,13 +141,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
