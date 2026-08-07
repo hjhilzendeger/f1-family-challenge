@@ -12,14 +12,32 @@ function parts(ms: number) {
 }
 
 export function Countdown({ target, compact = false }: { target: string; compact?: boolean }) {
-  const [now, setNow] = useState(() => Date.now());
+  const [now, setNow] = useState<number | null>(null);
 
   useEffect(() => {
+    setNow(Date.now());
     const id = setInterval(() => setNow(Date.now()), 1000);
     return () => clearInterval(id);
   }, []);
 
-  const diff = new Date(target).getTime() - now;
+  const diff = now === null ? null : new Date(target).getTime() - now;
+
+  if (diff === null) {
+    if (compact) return <span className="tnum text-sm text-muted-foreground">--d --h --m</span>;
+    return (
+      <div className="flex gap-2 sm:gap-3">
+        {["days", "hrs", "min", "sec"].map((label) => (
+          <div
+            key={label}
+            className="min-w-16 flex-1 rounded-xl border border-border bg-secondary/60 px-2 py-3 text-center sm:min-w-20"
+          >
+            <div className="tnum font-display text-3xl leading-none text-muted-foreground sm:text-4xl">--</div>
+            <div className="mt-1 text-[10px] uppercase tracking-widest text-muted-foreground">{label}</div>
+          </div>
+        ))}
+      </div>
+    );
+  }
 
   if (diff <= 0) {
     return (
