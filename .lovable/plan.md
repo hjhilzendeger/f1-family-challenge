@@ -54,6 +54,11 @@ Results are fetched automatically from a public F1 results API (Jolpica/Ergast-s
 
 Motorsport-styled dark UI: asphalt-dark surfaces, a single hot accent for actions and leaders, tabular numerals for points, condensed uppercase headings. Podium picks use a drag-free three-slot selector so it works well on phones.
 
+## Tone: family game, not a tournament
+
+Keep it light and playful. Friendly copy and gentle teasing rather than official-sounding language, fun nicknames next to names, emoji-style reactions on the leaderboard, and everyone visible on the standings (no "eliminated" or harsh callouts). Sign-in stays simple — join with an invite code, no verification hoops, no admin consoles or audit-style screens. Scoring is explained in plain language, and results are framed as bragging rights.
+
+
 ## Engagement principles
 
 **1. Hook in the first minute.** After sign-in, the very first screen is a live countdown to the next race with a single prominent "Make your pick" call to action — no empty dashboard. The prediction flow starts with just one question ("Who wins?") which can be answered in a few seconds, and immediately shows a confirmation with what the pick is worth. The countdown, race name, and circuit art give instant context.
