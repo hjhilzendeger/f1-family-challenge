@@ -33,17 +33,17 @@ const EMOJIS = ["🏎️", "⚡", "🔧", "🌟", "🕰️"];
 const ROW = 72;
 
 function HistoryPage() {
+  const { user } = Route.useRouteContext();
   const profiles = useQuery(profilesQuery);
 
   const players: DemoPlayer[] = useMemo(() => {
-    const rows = profiles.data ?? [];
-    if (rows.length < 2) return DEMO_PLAYERS;
-    return rows.slice(0, 5).map((profile, index) => ({
-      id: profile.id,
-      name: profile.nickname || profile.display_name,
-      emoji: EMOJIS[index] ?? "🏁",
-    }));
-  }, [profiles.data]);
+    const me = (profiles.data ?? []).find((profile) => profile.id === user.id);
+    if (!me) return DEMO_PLAYERS;
+    return [
+      { id: me.id, name: `${me.nickname || me.display_name} (you)`, emoji: "🏎️" },
+      ...DEMO_PLAYERS.slice(0, 4),
+    ];
+  }, [profiles.data, user.id]);
 
   const history = useMemo(() => buildHistory(players), [players]);
 
