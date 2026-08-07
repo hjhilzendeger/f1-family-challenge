@@ -1,5 +1,5 @@
 import { Link, useRouter } from "@tanstack/react-router";
-import { Flag, Trophy, Users, LogOut } from "lucide-react";
+import { Flag, Trophy, Users, LogOut, History } from "lucide-react";
 import type { ReactNode } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 const NAV = [
   { to: "/play", label: "Home", icon: Flag },
   { to: "/races", label: "Races", icon: Trophy },
+  { to: "/history", label: "History", icon: History },
   { to: "/family", label: "Family", icon: Users },
 ] as const;
 

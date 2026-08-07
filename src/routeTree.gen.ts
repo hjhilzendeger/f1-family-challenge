@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedFamilyRouteImport } from './routes/_authenticated/family'
+import { Route as AuthenticatedHistoryRouteImport } from './routes/_authenticated/history'
 import { Route as AuthenticatedPlayRouteImport } from './routes/_authenticated/play'
 import { Route as AuthenticatedRacesIndexRouteImport } from './routes/_authenticated/races.index'
 import { Route as AuthenticatedRacesRaceIdRouteImport } from './routes/_authenticated/races.$raceId'
@@ -35,6 +36,11 @@ const AuthRoute = AuthRouteImport.update({
 const AuthenticatedFamilyRoute = AuthenticatedFamilyRouteImport.update({
   id: '/family',
   path: '/family',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedHistoryRoute = AuthenticatedHistoryRouteImport.update({
+  id: '/history',
+  path: '/history',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedPlayRoute = AuthenticatedPlayRouteImport.update({
@@ -64,6 +70,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/family': typeof AuthenticatedFamilyRoute
+  '/history': typeof AuthenticatedHistoryRoute
   '/play': typeof AuthenticatedPlayRoute
   '/races/$raceId': typeof AuthenticatedRacesRaceIdRoute
   '/races/': typeof AuthenticatedRacesIndexRoute
@@ -73,6 +80,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/family': typeof AuthenticatedFamilyRoute
+  '/history': typeof AuthenticatedHistoryRoute
   '/play': typeof AuthenticatedPlayRoute
   '/races/$raceId': typeof AuthenticatedRacesRaceIdRoute
   '/races': typeof AuthenticatedRacesIndexRoute
@@ -84,6 +92,7 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
   '/_authenticated/family': typeof AuthenticatedFamilyRoute
+  '/_authenticated/history': typeof AuthenticatedHistoryRoute
   '/_authenticated/play': typeof AuthenticatedPlayRoute
   '/_authenticated/races/$raceId': typeof AuthenticatedRacesRaceIdRoute
   '/_authenticated/races/': typeof AuthenticatedRacesIndexRoute
@@ -95,6 +104,7 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/family'
+    | '/history'
     | '/play'
     | '/races/$raceId'
     | '/races/'
@@ -104,6 +114,7 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/family'
+    | '/history'
     | '/play'
     | '/races/$raceId'
     | '/races'
@@ -114,6 +125,7 @@ export interface FileRouteTypes {
     | '/_authenticated'
     | '/auth'
     | '/_authenticated/family'
+    | '/_authenticated/history'
     | '/_authenticated/play'
     | '/_authenticated/races/$raceId'
     | '/_authenticated/races/'
@@ -157,6 +169,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedFamilyRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/history': {
+      id: '/_authenticated/history'
+      path: '/history'
+      fullPath: '/history'
+      preLoaderRoute: typeof AuthenticatedHistoryRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/play': {
       id: '/_authenticated/play'
       path: '/play'
@@ -190,6 +209,7 @@ declare module '@tanstack/react-router' {
 
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedFamilyRoute: typeof AuthenticatedFamilyRoute
+  AuthenticatedHistoryRoute: typeof AuthenticatedHistoryRoute
   AuthenticatedPlayRoute: typeof AuthenticatedPlayRoute
   AuthenticatedRacesRaceIdRoute: typeof AuthenticatedRacesRaceIdRoute
   AuthenticatedRacesIndexRoute: typeof AuthenticatedRacesIndexRoute
@@ -197,6 +217,7 @@ interface AuthenticatedRouteRouteChildren {
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedFamilyRoute: AuthenticatedFamilyRoute,
+  AuthenticatedHistoryRoute: AuthenticatedHistoryRoute,
   AuthenticatedPlayRoute: AuthenticatedPlayRoute,
   AuthenticatedRacesRaceIdRoute: AuthenticatedRacesRaceIdRoute,
   AuthenticatedRacesIndexRoute: AuthenticatedRacesIndexRoute,
