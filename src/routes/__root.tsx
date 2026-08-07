@@ -10,6 +10,8 @@ import {
 import { useEffect, type ReactNode } from "react";
 
 import { Toaster } from "@/components/ui/sonner";
+import { DisplaySettingsProvider } from "@/components/DisplaySettings";
+
 import { supabase } from "@/integrations/supabase/client";
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
@@ -79,13 +81,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "F1 Family Predictor" },
+      { title: "Friendly Family Competition" },
       {
         name: "description",
         content:
           "A friendly family game of Formula 1 predictions on the road to the US Grand Prix in Austin.",
       },
-      { property: "og:title", content: "F1 Family Predictor" },
+      { property: "og:title", content: "Friendly Family Competition" },
       {
         property: "og:description",
         content: "Predict each Grand Prix with your family and climb the leaderboard.",
@@ -143,9 +145,12 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-      <Outlet />
-      <Toaster />
+      <DisplaySettingsProvider>
+        {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
+        <Outlet />
+        <Toaster />
+      </DisplaySettingsProvider>
     </QueryClientProvider>
   );
+
 }

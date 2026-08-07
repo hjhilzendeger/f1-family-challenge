@@ -17,6 +17,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { DriverDot } from "@/components/DriverChip";
 import {
   driverName,
   driversQuery,
@@ -38,13 +40,13 @@ import { saveRaceResult } from "@/lib/results.functions";
 export const Route = createFileRoute("/_authenticated/races/$raceId")({
   head: () => ({
     meta: [
-      { title: "Make your picks — F1 Family Predictor" },
+      { title: "Make your picks — Friendly Family Competition" },
       {
         name: "description",
         content:
           "Choose your podium, winning team, pole position and fastest lap for this Grand Prix, then see how the family scored.",
       },
-      { property: "og:title", content: "Make your picks — F1 Family Predictor" },
+      { property: "og:title", content: "Make your picks — Friendly Family Competition" },
       {
         property: "og:description",
         content: "Podium, team, pole and fastest lap picks for this Grand Prix.",
@@ -81,7 +83,11 @@ function DriverField({
         <SelectContent>
           {drivers.map((driver) => (
             <SelectItem key={driver.id} value={driver.id}>
-              {driver.full_name}
+              <span className="flex items-center gap-2">
+                <DriverDot driver={driver} />
+                <span className="font-display tracking-wide">{driver.code}</span>
+                <span>{driver.full_name}</span>
+              </span>
             </SelectItem>
           ))}
         </SelectContent>
@@ -272,6 +278,25 @@ function RaceDetail() {
               </>
             )}
           </div>
+
+          {!stage.fields.extras && (
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <div
+                  tabIndex={0}
+                  className="mt-4 inline-flex items-center gap-2 rounded-xl border border-border bg-secondary/30 px-3 py-2 text-sm text-muted-foreground"
+                >
+                  <Lock className="size-3.5" aria-hidden="true" /> Level 4: pole & fastest lap — why is
+                  this locked?
+                </div>
+              </TooltipTrigger>
+              <TooltipContent className="max-w-64 text-sm">
+                Pole position and fastest lap open up at Level 4, once you've scored points in a race.
+                We keep them hidden at first so there are only a couple of picks to make while you're
+                learning the game.
+              </TooltipContent>
+            </Tooltip>
+          )}
 
           {stage.nextUnlock && (
             <p className="mt-4 text-sm text-muted-foreground">🔓 {stage.nextUnlock}</p>

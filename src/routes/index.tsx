@@ -8,13 +8,13 @@ export const Route = createFileRoute("/")({
   loader: () => getNextRacePreview(),
   head: () => ({
     meta: [
-      { title: "F1 Family Predictor — Race Picks & Family Leaderboard" },
+      { title: "Friendly Family Competition — Race Picks & Family Leaderboard" },
       {
         name: "description",
         content:
           "A friendly family game: predict the F1 podium, winning team, pole and fastest lap each race on the road to Austin, and climb the family leaderboard.",
       },
-      { property: "og:title", content: "F1 Family Predictor — Race Picks & Family Leaderboard" },
+      { property: "og:title", content: "Friendly Family Competition — Race Picks & Family Leaderboard" },
       {
         property: "og:description",
         content:

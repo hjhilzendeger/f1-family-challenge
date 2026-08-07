@@ -9,13 +9,13 @@ import { isLocked, predictionsQuery, racesQuery, resultsQuery, scoresQuery } fro
 export const Route = createFileRoute("/_authenticated/races/")({
   head: () => ({
     meta: [
-      { title: "Races to Austin — F1 Family Predictor" },
+      { title: "Races to Austin — Friendly Family Competition" },
       {
         name: "description",
         content:
           "Every remaining Grand Prix on the road to Austin: see which picks are in, which races are locked and what you scored.",
       },
-      { property: "og:title", content: "Races to Austin — F1 Family Predictor" },
+      { property: "og:title", content: "Races to Austin — Friendly Family Competition" },
       {
         property: "og:description",
         content: "Your race-by-race pick tracker on the road to the US Grand Prix.",

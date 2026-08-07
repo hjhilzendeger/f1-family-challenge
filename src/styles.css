@@ -162,3 +162,42 @@
     transparent 8px 18px
   );
 }
+
+/* Team accent colors — used next to driver codes so kids can spot a team fast. */
+:root {
+  --team-alpine: oklch(0.7 0.15 235);
+  --team-aston-martin: oklch(0.62 0.13 165);
+  --team-audi: oklch(0.72 0.14 145);
+  --team-cadillac: oklch(0.78 0.13 90);
+  --team-ferrari: oklch(0.62 0.235 26);
+  --team-haas: oklch(0.8 0.02 260);
+  --team-mclaren: oklch(0.76 0.17 62);
+  --team-mercedes: oklch(0.82 0.12 175);
+  --team-racing-bulls: oklch(0.68 0.16 265);
+  --team-red-bull: oklch(0.55 0.19 275);
+  --team-williams: oklch(0.7 0.16 250);
+}
+
+/* Great-Gran Rose mode: bigger type, everything scales with rem. */
+html.a11y-large-text {
+  font-size: 120%;
+}
+
+/* High contrast: brighter text, stronger borders, flatter surfaces. */
+html.a11y-high-contrast {
+  --background: oklch(0.09 0 0);
+  --foreground: oklch(1 0 0);
+  --card: oklch(0.15 0 0);
+  --card-foreground: oklch(1 0 0);
+  --secondary: oklch(0.24 0 0);
+  --secondary-foreground: oklch(1 0 0);
+  --muted-foreground: oklch(0.9 0 0);
+  --border: oklch(0.62 0 0);
+  --input: oklch(0.62 0 0);
+  --primary: oklch(0.68 0.24 26);
+  --accent: oklch(0.9 0.17 92);
+}
+
+html.a11y-high-contrast body {
+  background-image: none;
+}

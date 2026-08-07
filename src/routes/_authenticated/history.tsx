@@ -4,20 +4,21 @@ import { useEffect, useMemo, useState } from "react";
 import { Pause, Play, RotateCcw, Trophy } from "lucide-react";
 import { AppShell } from "@/components/AppShell";
 import { Button } from "@/components/ui/button";
-import { profilesQuery } from "@/lib/f1";
+import { groupsQuery, profilesQuery } from "@/lib/f1";
+import { useIsMobile } from "@/hooks/use-mobile";
 import { MAX_RACE_POINTS } from "@/lib/scoring";
 import { buildHistory, DEMO_PLAYERS, type DemoPlayer } from "@/lib/history-demo";
 
 export const Route = createFileRoute("/_authenticated/history")({
   head: () => ({
     meta: [
-      { title: "Prediction History — F1 Family Predictor" },
+      { title: "The Battle Continues — Friendly Family Competition" },
       {
         name: "description",
         content:
           "Replay the family championship race by race: simulated picks, points scored and the leaderboard shuffling in real time.",
       },
-      { property: "og:title", content: "Prediction History — F1 Family Predictor" },
+      { property: "og:title", content: "The Battle Continues — Friendly Family Competition" },
       {
         property: "og:description",
         content: "Watch the family leaderboard shuffle race by race in an animated replay.",
@@ -30,11 +31,17 @@ export const Route = createFileRoute("/_authenticated/history")({
 });
 
 
-const ROW = 72;
+/** Row pitch: taller on small screens so names/notes never collide mid-slide. */
+const ROW_DESKTOP = 88;
+const ROW_MOBILE = 112;
+
 
 function HistoryPage() {
   const { user } = Route.useRouteContext();
   const profiles = useQuery(profilesQuery);
+  const groups = useQuery(groupsQuery);
+  const isMobile = useIsMobile();
+  const ROW = isMobile ? ROW_MOBILE : ROW_DESKTOP;
 
   const players: DemoPlayer[] = useMemo(() => {
     const me = (profiles.data ?? []).find((profile) => profile.id === user.id);
@@ -46,6 +53,11 @@ function HistoryPage() {
   }, [profiles.data, user.id]);
 
   const history = useMemo(() => buildHistory(players), [players]);
+
+  const groupName = useMemo(() => {
+    const me = (profiles.data ?? []).find((profile) => profile.id === user.id);
+    return (groups.data ?? []).find((group) => group.id === me?.group_id)?.name ?? "the family";
+  }, [groups.data, profiles.data, user.id]);
 
   const [step, setStep] = useState(0);
   const [playing, setPlaying] = useState(true);
@@ -61,7 +73,7 @@ function HistoryPage() {
       setPlaying(false);
       return;
     }
-    const id = setTimeout(() => setStep((value) => value + 1), 1800);
+    const id = setTimeout(() => setStep((value) => value + 1), 2800);
     return () => clearTimeout(id);
   }, [playing, step, history.length]);
 
@@ -90,7 +102,7 @@ function HistoryPage() {
 
   return (
     <AppShell>
-      <h1 className="text-4xl">Prediction History</h1>
+      <h1 className="text-4xl">The Battle Continues for {groupName}</h1>
       <p className="mt-1 text-sm text-muted-foreground">
         A replay of the family championship so far — simulated picks scored against past race results. Hit play and
         watch the leaderboard shuffle.
@@ -156,10 +168,16 @@ function HistoryPage() {
             return (
               <div
                 key={entry.player.id}
-                className="absolute inset-x-0 transition-transform duration-700 ease-out"
-                style={{ transform: `translateY(${position * ROW}px)` }}
+                className="absolute inset-x-0 transition-transform duration-[1400ms] ease-in-out motion-reduce:transition-none"
+                style={{
+                  transform: `translateY(${position * ROW}px)`,
+                  height: ROW,
+                  willChange: "transform",
+                  transitionDelay: `${position * 90}ms`,
+                }}
               >
-                <div className="flex items-center gap-3 rounded-2xl border border-border bg-secondary/40 px-3 py-2">
+
+                <div className="flex items-center gap-3 rounded-2xl border border-border bg-card px-3 py-2">
                   <span className="w-6 text-center font-display text-xl text-muted-foreground">{position + 1}</span>
                   <span className="text-xl" aria-hidden="true">
                     {entry.player.emoji}

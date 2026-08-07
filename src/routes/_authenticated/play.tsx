@@ -11,6 +11,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Progress } from "@/components/ui/progress";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { DriverChip } from "@/components/DriverChip";
+import { RaceReminder } from "@/components/RaceReminder";
 import {
   activityQuery,
   driversQuery,
@@ -23,16 +26,45 @@ import {
 } from "@/lib/f1";
 import { computeStage } from "@/lib/stages";
 
+const LEVELS = [
+  {
+    stage: 1,
+    title: "Rookie",
+    unlockedHint: "Pick the race winner — that's all Level 1 asks for.",
+    lockedHint: "Pick the race winner — that's all Level 1 asks for.",
+  },
+  {
+    stage: 2,
+    title: "Podium Hunter",
+    unlockedHint: "You can call the full podium: P1, P2 and P3.",
+    lockedHint: "Unlocks as soon as you make your first winner pick.",
+  },
+  {
+    stage: 3,
+    title: "Team Principal",
+    unlockedHint: "The winning-team pick is open to you.",
+    lockedHint: "Unlocks once you submit a full podium (P1, P2 and P3) for a race.",
+  },
+  {
+    stage: 4,
+    title: "Race Strategist",
+    unlockedHint: "Pole position and fastest lap picks are all yours.",
+    lockedHint:
+      "Pole and fastest lap stay locked until you score points in one race — so the picks don't feel overwhelming on day one.",
+  },
+] as const;
+
+
 export const Route = createFileRoute("/_authenticated/play")({
   head: () => ({
     meta: [
-      { title: "Your race home — F1 Family Predictor" },
+      { title: "Your race home — Friendly Family Competition" },
       {
         name: "description",
         content:
           "Countdown to the next Grand Prix, make your winner pick in one tap and see how the family leaderboard is shaping up.",
       },
-      { property: "og:title", content: "Your race home — F1 Family Predictor" },
+      { property: "og:title", content: "Your race home — Friendly Family Competition" },
       {
         property: "og:description",
         content: "Next race countdown, one-tap picks and the family leaderboard.",
@@ -142,14 +174,16 @@ function PlayPage() {
                 <Countdown target={upcoming.race_start} />
               </div>
 
+              <RaceReminder race={upcoming} />
+
               <div className="mt-6">
                 <h2 className="text-2xl">Who wins?</h2>
                 <p className="text-sm text-muted-foreground">
                   {myPick?.p1_driver
                     ? "Tap another driver any time before the race starts."
-                    : "One tap, that's it. You can add more picks later."}
+                    : "One tap, that's it. You can add more picks later. Colours match each team."}
                 </p>
-                <div className="mt-3 flex flex-wrap gap-2">
+                <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4">
                   {(drivers.data ?? []).map((driver) => {
                     const selected = myPick?.p1_driver === driver.id;
                     return (
@@ -157,13 +191,14 @@ function PlayPage() {
                         key={driver.id}
                         type="button"
                         onClick={() => quickPick(driver.id)}
-                        className={`rounded-xl border px-3 py-2 text-sm font-semibold transition-all ${
+                        aria-pressed={selected}
+                        className={`rounded-xl border px-3 py-2 text-left transition-all ${
                           selected
                             ? "border-primary bg-primary text-primary-foreground shadow-glow"
                             : "border-border bg-secondary/50 text-foreground hover:border-primary/60 hover:bg-secondary"
                         }`}
                       >
-                        {driver.code}
+                        <DriverChip driver={driver} selected={selected} />
                       </button>
                     );
                   })}
@@ -176,6 +211,7 @@ function PlayPage() {
                   </Button>
                 )}
               </div>
+
             </>
           ) : (
             <>
@@ -196,7 +232,7 @@ function PlayPage() {
           </div>
           <p className="mt-1 text-sm text-muted-foreground">{stage.blurb}</p>
           <Progress value={stagePercent} className="mt-4" />
-          <p className="mt-3 flex items-center gap-2 text-sm text-muted-foreground">
+          <div className="mt-3 flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
             {stage.nextUnlock ? (
               <>
                 <Lock className="size-3.5" aria-hidden="true" /> {stage.nextUnlock}
@@ -204,8 +240,43 @@ function PlayPage() {
             ) : (
               <>🏆 All picks unlocked — you're a full-blown strategist.</>
             )}
-          </p>
+          </div>
+
+          <ol className="mt-4 grid gap-2 sm:grid-cols-4">
+            {LEVELS.map((level) => {
+              const unlocked = stage.stage >= level.stage;
+              return (
+                <li key={level.stage}>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <div
+                        tabIndex={0}
+                        className={`flex w-full items-center gap-2 rounded-xl border px-3 py-2 text-left text-sm ${
+                          unlocked
+                            ? "border-primary/50 bg-primary/10 text-foreground"
+                            : "border-border bg-secondary/30 text-muted-foreground"
+                        }`}
+                      >
+                        {unlocked ? (
+                          <Sparkles className="size-3.5 shrink-0 text-accent" aria-hidden="true" />
+                        ) : (
+                          <Lock className="size-3.5 shrink-0" aria-hidden="true" />
+                        )}
+                        <span className="truncate">
+                          L{level.stage} {level.title}
+                        </span>
+                      </div>
+                    </TooltipTrigger>
+                    <TooltipContent className="max-w-56 text-sm">
+                      {unlocked ? level.unlockedHint : level.lockedHint}
+                    </TooltipContent>
+                  </Tooltip>
+                </li>
+              );
+            })}
+          </ol>
         </section>
+
 
         <div className="grid gap-6 md:grid-cols-2">
           <section className="rounded-3xl border border-border bg-card/70 p-5">
