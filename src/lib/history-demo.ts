@@ -126,7 +126,7 @@ export function buildHistory(players: DemoPlayer[]): RaceRoundResult[] {
   return DEMO_RACES.map((race) => ({
     race,
     rows: players.map((player, index) => {
-      const scored = scorePrediction(simulatedPick(index, race), race.race_result_alias ?? race.result);
+      const scored = scorePrediction(simulatedPick(index, race), race.result);
       const best = [...scored.breakdown].sort((a, b) => b.points - a.points)[0];
       return {
         playerId: player.id,
