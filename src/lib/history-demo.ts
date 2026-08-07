@@ -16,11 +16,11 @@ export type DemoPlayer = {
 
 /** Simulated family crew — replaced by real nicknames when the family has profiles. */
 export const DEMO_PLAYERS: DemoPlayer[] = [
-  { id: "p1", name: "Dad", emoji: "🏎️" },
-  { id: "p2", name: "Mom", emoji: "⚡" },
-  { id: "p3", name: "Jake", emoji: "🔧" },
-  { id: "p4", name: "Ella", emoji: "🌟" },
-  { id: "p5", name: "Grandpa", emoji: "🕰️" },
+  { id: "p1", name: "Dad", emoji: "🏁" },
+  { id: "p2", name: "Mom", emoji: "⭐" },
+  { id: "p3", name: "Jake", emoji: "🔥" },
+  { id: "p4", name: "Ella", emoji: "🎯" },
+  { id: "p5", name: "Grandpa", emoji: "🚀" },
 ];
 
 const R = (
