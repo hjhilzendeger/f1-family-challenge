@@ -54,6 +54,29 @@ Results are fetched automatically from a public F1 results API (Jolpica/Ergast-s
 
 Motorsport-styled dark UI: asphalt-dark surfaces, a single hot accent for actions and leaders, tabular numerals for points, condensed uppercase headings. Podium picks use a drag-free three-slot selector so it works well on phones.
 
+## Engagement principles
+
+**1. Hook in the first minute.** After sign-in, the very first screen is a live countdown to the next race with a single prominent "Make your pick" call to action — no empty dashboard. The prediction flow starts with just one question ("Who wins?") which can be answered in a few seconds, and immediately shows a confirmation with what the pick is worth. The countdown, race name, and circuit art give instant context.
+
+**2. Progression without overwhelm.** Picks are staged, and later stages only unlock once the earlier one is made:
+
+```text
+Stage 1  Race winner                     (always available)
+Stage 2  Full podium P1-P2-P3            (after first winner pick)
+Stage 3  Winning team                    (after first podium submitted)
+Stage 4  Pole position + fastest lap     (after first race is scored)
+```
+
+A short "level" indicator on the home screen shows which stage the member has reached and what unlocks next. Members who ignore the extras still compete — they just score from fewer categories. A three-step first-run tour explains predicting, locking, and scoring, and nothing else.
+
+**3. Continuous feedback.** Every action confirms itself and every result explains itself:
+
+- Instant toast and saved-state badge when a pick is stored, plus a "picks complete" progress ring per race.
+- Live lock countdown that changes tone as the deadline nears.
+- After scoring, an animated points breakdown per pick showing exactly what earned or missed points, with your rank change (up/down/same) versus last race.
+- Streak and personal-best callouts, plus a small "you beat 3 of 5 family members this race" line.
+- A group activity feed ("Dad locked his picks for Austin") so the app feels alive between races.
+
 ## Technical notes
 
 - Lovable Cloud provides auth, database, and server logic.
