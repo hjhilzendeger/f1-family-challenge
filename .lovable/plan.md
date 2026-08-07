@@ -10,7 +10,7 @@ Family members sign in, join a family group, and predict each upcoming race up t
 
 - Simple email + password sign-in only (no Google or other social sign-in), with email confirmation turned off so kids can sign up and start playing immediately.
 - Each member has a display name and avatar-style initial.
-- A family group is created by the first member, who gets an invite code. Others enter that code when signing up to join the group.
+- A family group is created by the first member. Joining is open for now: anyone who signs up can pick an existing group from a list and join it with one tap (invite codes are optional, not required) — so your instructor can sign up, join the family group, and play along to grade it.
 - Leaderboards and predictions are scoped to the group, so only family members see each other's picks.
 - One member is the group admin (whoever created it) and can rename the group, regenerate the invite code, and remove members.
 
