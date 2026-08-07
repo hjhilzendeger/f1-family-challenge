@@ -68,13 +68,18 @@ function PlayPage() {
     );
   }
 
-  if (!me) {
+  if (!me || !me.group_id) {
     return (
       <AppShell>
-        <Onboarding userId={user.id} groups={groups.data ?? []} />
+        <Onboarding
+          userId={user.id}
+          initialName={me?.display_name ?? ""}
+          groups={groups.data ?? []}
+        />
       </AppShell>
     );
   }
+
 
   const upcoming = nextRace(races.data ?? []);
   const myPredictions = (predictions.data ?? []).filter((pick) => pick.user_id === user.id);
